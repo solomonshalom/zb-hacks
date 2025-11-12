@@ -1,0 +1,17 @@
+node_modules
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.next
+.turbo
+.vercel
+.vscode
+.DS_Store
+.env.development
+.env.production
+.env.test
+.next
+.turbo
+.vercel
