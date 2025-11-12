@@ -44,8 +44,8 @@ export const nextSeoConfig = {
     ],
   },
   twitter: {
-    handle: "@solomonlijo",
-    site: "https://zerobase.app",
+    handle: "@shalomlijo",
+    site: "https://x.com/shalomlijo",
     cardType: "summary_large_image",
   },
 };
