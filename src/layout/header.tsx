@@ -17,13 +17,6 @@ const Header = () => {
             <p className="hidden md:block">Zerobase</p>
           </div>
         </Link>
-        <div className="flex items-center space-x-4">
-          <Link href="/wall" underline={false}>
-            <span className="text-sm transition-all duration-100 hover:text-white">
-              Wall
-            </span>
-          </Link>
-        </div>
       </div>
     </header>
   );
