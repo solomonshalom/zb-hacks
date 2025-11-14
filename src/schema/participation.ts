@@ -6,16 +6,14 @@ import { z } from "zod";
 
 export const participationSchema = z.object({
   id: z.string(),
-  is_reviewed: z.boolean(),
-  is_winner: z.boolean(),
+  name: z.string(),
+  email: z.string().email(),
   title: z.string(),
-  description: z.string(),
-  hackathon_url: z.string(),
-  project_url: z.string(),
-  launch_post_url: z.string().optional(),
-  video_url: z.string().optional(),
-  joining_type: z.enum(["in-person", "remote"]),
-  creatorName: z.string(),
+  oneLiner: z.string(),
+  link: z.string().url(),
+  results: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export type participation = z.TypeOf<typeof participationSchema>;
@@ -25,28 +23,14 @@ export type participation = z.TypeOf<typeof participationSchema>;
 // Create new participation:
 
 export const newParticipationSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  hackathon_url: z.string(),
-  hackathon_name: z.string(),
-  project_url: z.string(),
-  launch_post_url: z.string().optional(),
-  video_url: z.string().optional(),
-  joining_type: z.enum(["in-person", "remote"]),
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Valid email is required"),
+  title: z.string().min(1, "Title is required").max(100),
+  oneLiner: z.string().min(1, "One liner is required").max(100),
+  link: z.string().url("Valid URL is required"),
+  results: z.string().min(1, "Results description is required"),
 });
 
 export type newParticipation = z.TypeOf<typeof newParticipationSchema>;
-
-// -----------------------------------------------
-
-// Update participation:
-
-export const updateParticipationSchema = z.object({
-  id: z.string(),
-  is_reviewed: z.boolean(),
-  is_winner: z.boolean(),
-});
-
-export type updateParticipation = z.TypeOf<typeof updateParticipationSchema>;
 
 // -----------------------------------------------

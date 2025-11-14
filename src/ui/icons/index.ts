@@ -29,3 +29,6 @@ export { default as Send } from "./send";
 
 // Settings:
 export { default as Settings } from "./settings";
+
+// Sparkles:
+export { default as Sparkles } from "./sparkles";

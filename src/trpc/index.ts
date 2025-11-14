@@ -15,11 +15,10 @@
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { adminAuth, adminDb } from "@/lib/firebase-admin";
-import { DecodedIdToken } from "firebase-admin/auth";
+import { adminDb } from "@/lib/firebase-admin";
 
 type CreateContextOptions = {
-  user: DecodedIdToken | null;
+  db: FirebaseFirestore.Firestore;
 };
 
 /**
@@ -34,8 +33,7 @@ type CreateContextOptions = {
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    user: opts.user,
-    db: adminDb,
+    db: opts.db,
   };
 };
 
@@ -46,23 +44,8 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const { req } = opts;
-
-  let user: DecodedIdToken | null = null;
-
-  if (adminAuth) {
-    try {
-      const token = req.headers.authorization?.split("Bearer ")[1];
-      if (token) {
-        user = await adminAuth.verifyIdToken(token);
-      }
-    } catch (error) {
-      console.error("Error verifying token:", error);
-    }
-  }
-
   return createInnerTRPCContext({
-    user,
+    db: adminDb,
   });
 };
 
@@ -71,7 +54,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  *
  * This is where the tRPC API is initialized, connecting the context and transformer.
  */
-import { initTRPC, TRPCError } from "@trpc/server";
+import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
@@ -103,26 +86,3 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
-
-/** Reusable middleware that enforces users are logged in before running the procedure. */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-  return next({
-    ctx: {
-      user: ctx.user,
-      db: ctx.db,
-    },
-  });
-});
-
-/**
- * Protected (authenticated) procedure
- *
- * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
- * the session is valid and guarantees `ctx.user` is not null.
- *
- * @see https://trpc.io/docs/procedures
- */
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);

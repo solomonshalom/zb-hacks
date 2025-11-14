@@ -17,17 +17,12 @@ import Footer from "@/layout/footer";
 import { DefaultSeo } from "next-seo";
 import { nextSeoConfig } from "next-seo.config";
 
-// Auth:
-import { AuthProvider } from "@/lib/auth-context";
-
 // Dynamic imports for performance
 const Show = dynamic(() => import("@/animations/show"), { ssr: false });
 
 const App: AppType = ({ Component, pageProps, router }) => {
-  const isAuthPage = router.pathname === "/auth";
-
   return (
-    <AuthProvider>
+    <>
       <DefaultSeo {...nextSeoConfig} />
       <NextNProgress
         color="#979797"
@@ -38,7 +33,7 @@ const App: AppType = ({ Component, pageProps, router }) => {
         options={{ showSpinner: false }}
       />
       <main className="font-sans">
-        {!isAuthPage && <Header />}
+        <Header />
         <Show routerKey={router.route}>
           <Component {...pageProps} />
         </Show>
@@ -53,9 +48,9 @@ const App: AppType = ({ Component, pageProps, router }) => {
             },
           }}
         />
-        {!isAuthPage && <Footer />}
+        <Footer />
       </main>
-    </AuthProvider>
+    </>
   );
 };
 

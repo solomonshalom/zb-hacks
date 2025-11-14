@@ -1,11 +1,9 @@
 import { createTRPCRouter } from "@/trpc";
 
-// Hackathon router:
-import { hackathonRouter } from "./routers/hackathon.router";
+// Participation router:
 import { participationRouter } from "./routers/participation.router";
 
 export const appRouter = createTRPCRouter({
-  hackathon: hackathonRouter,
   participation: participationRouter,
 });
 
