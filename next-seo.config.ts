@@ -2,7 +2,7 @@ export const nextSeoConfig = {
   title: "Home",
   titleTemplate: "%s - Zerobase",
   description:
-    "An open-source hackathon management platform built with Next.js & Firebase",
+    "Submit projects for Zerobase X Lovable hackathon",
   defaultTitle: "Zerobase",
   additionalLinkTags: [
     {
@@ -31,7 +31,7 @@ export const nextSeoConfig = {
   ],
   openGraph: {
     site_name: "Zerobase",
-    url: "https://zerobase.app",
+    url: "https://zerobase.ca",
     type: "website",
     locale: "en_US",
     images: [
